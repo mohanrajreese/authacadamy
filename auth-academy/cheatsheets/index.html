@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Cheat Sheets - Quick Reference Cards</title>
+    <meta name="description"
+        content="Downloadable authentication cheat sheets. JWT structure, OAuth flows, security best practices.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">📄</div>
+                <div>
+                    <h1>Auth Cheat Sheets</h1>
+                    <p class="subtitle">Quick Reference Cards</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="../index.html" class="nav-link">← Auth Academy</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section class="intro-section glass-card">
+                <h2>📄 Print-Ready Cheat Sheets</h2>
+                <p>Quick reference cards for authentication concepts. Print them, save them, or share them!</p>
+            </section>
+
+            <!-- JWT Cheat Sheet -->
+            <section class="cheatsheet glass-card" id="jwt-cheatsheet">
+                <div class="sheet-header">
+                    <h2>🎫 JWT Cheat Sheet</h2>
+                    <button class="btn btn-secondary" onclick="printSheet('jwt-cheatsheet')">🖨️ Print</button>
+                </div>
+
+                <div class="sheet-content">
+                    <div class="sheet-section">
+                        <h3>Structure</h3>
+                        <div class="jwt-visual">
+                            <span class="part header">xxxxx</span>.<span class="part payload">yyyyy</span>.<span
+                                class="part signature">zzzzz</span>
+                        </div>
+                        <div class="parts-legend">
+                            <span class="legend-item"><span class="dot header"></span> Header (algorithm, type)</span>
+                            <span class="legend-item"><span class="dot payload"></span> Payload (claims)</span>
+                            <span class="legend-item"><span class="dot signature"></span> Signature
+                                (verification)</span>
+                        </div>
+                    </div>
+
+                    <div class="sheet-section">
+                        <h3>Common Claims</h3>
+                        <table class="claims-table">
+                            <tr>
+                                <td><code>iss</code></td>
+                                <td>Issuer - Who created the token</td>
+                            </tr>
+                            <tr>
+                                <td><code>sub</code></td>
+                                <td>Subject - Who the token represents</td>
+                            </tr>
+                            <tr>
+                                <td><code>aud</code></td>
+                                <td>Audience - Who should accept it</td>
+                            </tr>
+                            <tr>
+                                <td><code>exp</code></td>
+                                <td>Expiration time (Unix timestamp)</td>
+                            </tr>
+                            <tr>
+                                <td><code>iat</code></td>
+                                <td>Issued at (Unix timestamp)</td>
+                            </tr>
+                            <tr>
+                                <td><code>jti</code></td>
+                                <td>JWT ID - Unique identifier</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="sheet-section">
+                        <h3>Algorithms</h3>
+                        <div class="algo-grid">
+                            <div class="algo-item">
+                                <strong>HS256</strong>
+                                <span>HMAC + SHA-256</span>
+                                <span class="algo-type">Symmetric</span>
+                            </div>
+                            <div class="algo-item">
+                                <strong>RS256</strong>
+                                <span>RSA + SHA-256</span>
+                                <span class="algo-type">Asymmetric</span>
+                            </div>
+                            <div class="algo-item">
+                                <strong>ES256</strong>
+                                <span>ECDSA + SHA-256</span>
+                                <span class="algo-type">Asymmetric</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sheet-section">
+                        <h3>Best Practices</h3>
+                        <div class="tips-grid">
+                            <div class="tip do">✅ Use HTTPS only</div>
+                            <div class="tip do">✅ Short expiration (15min-1hr)</div>
+                            <div class="tip do">✅ Validate all claims</div>
+                            <div class="tip dont">❌ Store in localStorage</div>
+                            <div class="tip dont">❌ Put secrets in payload</div>
+                            <div class="tip dont">❌ Use "none" algorithm</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OAuth Cheat Sheet -->
+            <section class="cheatsheet glass-card" id="oauth-cheatsheet">
+                <div class="sheet-header">
+                    <h2>🔐 OAuth 2.0 Cheat Sheet</h2>
+                    <button class="btn btn-secondary" onclick="printSheet('oauth-cheatsheet')">🖨️ Print</button>
+                </div>
+
+                <div class="sheet-content">
+                    <div class="sheet-section">
+                        <h3>Grant Types</h3>
+                        <table class="grants-table">
+                            <tr>
+                                <td><strong>Authorization Code + PKCE</strong></td>
+                                <td>✅ Recommended</td>
+                                <td>Web, Mobile, SPA</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Client Credentials</strong></td>
+                                <td>✅ Recommended</td>
+                                <td>Machine-to-Machine</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Implicit</strong></td>
+                                <td>❌ Deprecated</td>
+                                <td>Don't use</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Password</strong></td>
+                                <td>❌ Deprecated</td>
+                                <td>Don't use</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="sheet-section">
+                        <h3>Authorization Code Flow</h3>
+                        <div class="flow-steps">
+                            <div class="step">1️⃣ User clicks "Login"</div>
+                            <div class="step">2️⃣ Redirect to /authorize</div>
+                            <div class="step">3️⃣ User authenticates</div>
+                            <div class="step">4️⃣ Redirect with code</div>
+                            <div class="step">5️⃣ Exchange code for token</div>
+                            <div class="step">6️⃣ Use token for API calls</div>
+                        </div>
+                    </div>
+
+                    <div class="sheet-section">
+                        <h3>Key Parameters</h3>
+                        <table class="params-table">
+                            <tr>
+                                <td><code>state</code></td>
+                                <td>Prevents CSRF attacks</td>
+                            </tr>
+                            <tr>
+                                <td><code>code_challenge</code></td>
+                                <td>PKCE - SHA256 hash</td>
+                            </tr>
+                            <tr>
+                                <td><code>code_verifier</code></td>
+                                <td>PKCE - Random string</td>
+                            </tr>
+                            <tr>
+                                <td><code>redirect_uri</code></td>
+                                <td>Where to return user</td>
+                            </tr>
+                            <tr>
+                                <td><code>scope</code></td>
+                                <td>Permissions requested</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Cheat Sheet -->
+            <section class="cheatsheet glass-card" id="security-cheatsheet">
+                <div class="sheet-header">
+                    <h2>🛡️ Auth Security Cheat Sheet</h2>
+                    <button class="btn btn-secondary" onclick="printSheet('security-cheatsheet')">🖨️ Print</button>
+                </div>
+
+                <div class="sheet-content">
+                    <div class="sheet-section">
+                        <h3>Token Storage</h3>
+                        <div class="storage-comparison">
+                            <div class="storage-item good">
+                                <h4>✅ HttpOnly Cookie</h4>
+                                <ul>
+                                    <li>Not accessible via JS</li>
+                                    <li>Sent automatically</li>
+                                    <li>XSS protected</li>
+                                </ul>
+                            </div>
+                            <div class="storage-item bad">
+                                <h4>❌ localStorage</h4>
+                                <ul>
+                                    <li>Accessible via JS</li>
+                                    <li>XSS vulnerable</li>
+                                    <li>Persists forever</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sheet-section">
+                        <h3>Attack Prevention</h3>
+                        <table class="attacks-table">
+                            <tr>
+                                <td><strong>XSS</strong></td>
+                                <td>HttpOnly cookies, CSP, input sanitization</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CSRF</strong></td>
+                                <td>State parameter, SameSite cookies</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Token Theft</strong></td>
+                                <td>Short expiry, token rotation, binding</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Replay</strong></td>
+                                <td>Nonces, timestamps, jti claim</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="sheet-section">
+                        <h3>Must-Do Checklist</h3>
+                        <div class="checklist">
+                            <div>☑️ HTTPS everywhere</div>
+                            <div>☑️ Validate tokens on every request</div>
+                            <div>☑️ Short-lived access tokens</div>
+                            <div>☑️ Rotate refresh tokens</div>
+                            <div>☑️ Use PKCE for public clients</div>
+                            <div>☑️ Never expose secrets</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Part of <a href="../index.html">Auth Academy</a> • Built with ❤️</p>
+        </footer>
+    </div>
+
+    <script src="../shared/theme-manager.js"></script>
+    <script>
+        function printSheet(sheetId) {
+            const sheet = document.getElementById(sheetId);
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Auth Cheat Sheet</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 2rem; }
+                        h2, h3 { margin-bottom: 1rem; }
+                        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+                        td { padding: 0.5rem; border: 1px solid #ddd; }
+                        code { background: #f5f5f5; padding: 0.25rem; }
+                        .tip { display: inline-block; margin: 0.25rem; padding: 0.5rem; }
+                        .do { background: #d4edda; }
+                        .dont { background: #f8d7da; }
+                    </style>
+                </head>
+                <body>${sheet.innerHTML}</body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+
+</html>

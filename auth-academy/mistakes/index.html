@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Mistakes - What NOT to Do</title>
+    <meta name="description"
+        content="Learn from common authentication mistakes. Real examples of security vulnerabilities and how to fix them.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">⚠️</div>
+                <div>
+                    <h1>Auth Mistakes</h1>
+                    <p class="subtitle">What NOT to Do</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="../index.html" class="nav-link">← Auth Academy</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section class="intro-section glass-card">
+                <h2>🚨 Learn From These Mistakes</h2>
+                <p>Real-world authentication mistakes that can lead to security breaches. Each mistake includes the
+                    wrong approach, why it's dangerous, and the correct solution.</p>
+            </section>
+
+            <!-- Mistake 1 -->
+            <section class="mistake-card glass-card">
+                <div class="mistake-header">
+                    <span class="mistake-number">1</span>
+                    <h3>Storing JWTs in localStorage</h3>
+                    <span class="severity high">High Risk</span>
+                </div>
+
+                <div class="mistake-content">
+                    <div class="wrong-way">
+                        <h4>❌ Wrong Way</h4>
+                        <pre><code>// After login
+localStorage.setItem('token', response.jwt);
+
+// On API calls
+const token = localStorage.getItem('token');
+fetch('/api/data', {
+  headers: { Authorization: `Bearer ${token}` }
+});</code></pre>
+                    </div>
+
+                    <div class="why-bad">
+                        <h4>🎯 Why It's Dangerous</h4>
+                        <ul>
+                            <li>localStorage is accessible via JavaScript</li>
+                            <li>Any XSS vulnerability can steal the token</li>
+                            <li>Tokens persist even after browser closes</li>
+                            <li>No protection against CSRF without extra measures</li>
+                        </ul>
+                    </div>
+
+                    <div class="right-way">
+                        <h4>✅ Correct Approach</h4>
+                        <pre><code>// Server sets HttpOnly cookie
+Set-Cookie: token=eyJhbG...; HttpOnly; Secure; SameSite=Strict
+
+// Browser automatically includes cookie
+fetch('/api/data', { credentials: 'include' });</code></pre>
+                        <p class="tip">💡 Use HttpOnly cookies - they can't be accessed by JavaScript, protecting
+                            against XSS.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mistake 2 -->
+            <section class="mistake-card glass-card">
+                <div class="mistake-header">
+                    <span class="mistake-number">2</span>
+                    <h3>Hardcoding API Keys</h3>
+                    <span class="severity critical">Critical</span>
+                </div>
+
+                <div class="mistake-content">
+                    <div class="wrong-way">
+                        <h4>❌ Wrong Way</h4>
+                        <pre><code>// In your code (committed to Git!)
+const API_KEY = "sk_live_abc123xyz789";
+
+fetch(`https://api.stripe.com/charges`, {
+  headers: { Authorization: `Bearer ${API_KEY}` }
+});</code></pre>
+                    </div>
+
+                    <div class="why-bad">
+                        <h4>🎯 Why It's Dangerous</h4>
+                        <ul>
+                            <li>Keys get committed to version control</li>
+                            <li>Anyone with repo access can see them</li>
+                            <li>Bots actively scan GitHub for exposed keys</li>
+                            <li>Hard to rotate without code changes</li>
+                        </ul>
+                    </div>
+
+                    <div class="right-way">
+                        <h4>✅ Correct Approach</h4>
+                        <pre><code>// .env file (in .gitignore!)
+API_KEY=sk_live_abc123xyz789
+
+// In code
+const API_KEY = process.env.API_KEY;</code></pre>
+                        <p class="tip">💡 Use environment variables and secret managers. Never commit secrets to Git.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mistake 3 -->
+            <section class="mistake-card glass-card">
+                <div class="mistake-header">
+                    <span class="mistake-number">3</span>
+                    <h3>Using Implicit Flow for SPAs</h3>
+                    <span class="severity high">High Risk</span>
+                </div>
+
+                <div class="mistake-content">
+                    <div class="wrong-way">
+                        <h4>❌ Wrong Way</h4>
+                        <pre><code>// Implicit flow - token in URL fragment
+https://yourapp.com/callback#access_token=eyJhbG...&token_type=bearer
+
+// Token visible in:
+// - Browser history
+// - Server logs
+// - Referrer headers</code></pre>
+                    </div>
+
+                    <div class="why-bad">
+                        <h4>🎯 Why It's Dangerous</h4>
+                        <ul>
+                            <li>Token exposed in URL fragment</li>
+                            <li>Can leak via browser history, logs, referrer</li>
+                            <li>No way to get refresh tokens</li>
+                            <li>Deprecated by OAuth 2.1</li>
+                        </ul>
+                    </div>
+
+                    <div class="right-way">
+                        <h4>✅ Correct Approach</h4>
+                        <pre><code>// Authorization Code + PKCE
+const codeVerifier = generateRandomString(128);
+const codeChallenge = sha256(codeVerifier);
+
+// Auth request includes challenge
+/authorize?code_challenge=${codeChallenge}
+
+// Token request includes verifier (server-side or with PKCE)
+/token?code_verifier=${codeVerifier}</code></pre>
+                        <p class="tip">💡 Always use Authorization Code + PKCE for SPAs and mobile apps.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mistake 4 -->
+            <section class="mistake-card glass-card">
+                <div class="mistake-header">
+                    <span class="mistake-number">4</span>
+                    <h3>Not Validating JWT Signature</h3>
+                    <span class="severity critical">Critical</span>
+                </div>
+
+                <div class="mistake-content">
+                    <div class="wrong-way">
+                        <h4>❌ Wrong Way</h4>
+                        <pre><code>// Just decode without verification!
+const payload = JSON.parse(atob(token.split('.')[1]));
+const userId = payload.sub;
+
+// Attacker can forge tokens at will!</code></pre>
+                    </div>
+
+                    <div class="why-bad">
+                        <h4>🎯 Why It's Dangerous</h4>
+                        <ul>
+                            <li>Anyone can create fake tokens</li>
+                            <li>No way to detect tampering</li>
+                            <li>Attackers can impersonate any user</li>
+                            <li>Complete authentication bypass</li>
+                        </ul>
+                    </div>
+
+                    <div class="right-way">
+                        <h4>✅ Correct Approach</h4>
+                        <pre><code>// Use a proper JWT library
+const jwt = require('jsonwebtoken');
+
+try {
+  const payload = jwt.verify(token, SECRET_KEY);
+  // Token is valid and unmodified
+} catch (err) {
+  // Invalid signature, expired, etc.
+  res.status(401).send('Unauthorized');
+}</code></pre>
+                        <p class="tip">💡 Always verify the signature, expiration, issuer, and audience on every
+                            request.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mistake 5 -->
+            <section class="mistake-card glass-card">
+                <div class="mistake-header">
+                    <span class="mistake-number">5</span>
+                    <h3>Long-Lived Access Tokens</h3>
+                    <span class="severity medium">Medium Risk</span>
+                </div>
+
+                <div class="mistake-content">
+                    <div class="wrong-way">
+                        <h4>❌ Wrong Way</h4>
+                        <pre><code>// Token expires in 1 year
+const token = jwt.sign(payload, secret, { 
+  expiresIn: '365d' 
+});</code></pre>
+                    </div>
+
+                    <div class="why-bad">
+                        <h4>🎯 Why It's Dangerous</h4>
+                        <ul>
+                            <li>Stolen tokens valid for extended periods</li>
+                            <li>No opportunity to revoke access</li>
+                            <li>Permission changes not reflected</li>
+                            <li>Increases attack window</li>
+                        </ul>
+                    </div>
+
+                    <div class="right-way">
+                        <h4>✅ Correct Approach</h4>
+                        <pre><code>// Short-lived access token (15 min)
+const accessToken = jwt.sign(payload, secret, { 
+  expiresIn: '15m' 
+});
+
+// Long-lived refresh token (stored securely)
+const refreshToken = generateSecureToken();
+// Store in database with user association</code></pre>
+                        <p class="tip">💡 Use 15-minute access tokens with rotating refresh tokens.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mistake 6 -->
+            <section class="mistake-card glass-card">
+                <div class="mistake-header">
+                    <span class="mistake-number">6</span>
+                    <h3>Client Secret in Frontend</h3>
+                    <span class="severity critical">Critical</span>
+                </div>
+
+                <div class="mistake-content">
+                    <div class="wrong-way">
+                        <h4>❌ Wrong Way</h4>
+                        <pre><code>// In React/Vue/Angular code
+const CLIENT_SECRET = 'super_secret_123';
+
+fetch('/oauth/token', {
+  body: JSON.stringify({
+    client_secret: CLIENT_SECRET,
+    ...
+  })
+});</code></pre>
+                    </div>
+
+                    <div class="why-bad">
+                        <h4>🎯 Why It's Dangerous</h4>
+                        <ul>
+                            <li>Anyone can view source and extract secret</li>
+                            <li>Attackers can impersonate your app</li>
+                            <li>Can make API calls on your behalf</li>
+                            <li>Billing fraud possible</li>
+                        </ul>
+                    </div>
+
+                    <div class="right-way">
+                        <h4>✅ Correct Approach</h4>
+                        <pre><code>// Frontend uses PKCE instead of secret
+const codeVerifier = generateRandomString();
+const codeChallenge = sha256(codeVerifier);
+
+// OR route through your backend
+// Frontend → Your Backend → OAuth Provider</code></pre>
+                        <p class="tip">💡 Public clients (SPAs, mobile) should use PKCE. Secrets belong on servers only.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Summary -->
+            <section class="summary-section glass-card">
+                <h2>📋 Quick Checklist</h2>
+                <div class="checklist">
+                    <label><input type="checkbox"> JWTs stored in HttpOnly cookies, not localStorage</label>
+                    <label><input type="checkbox"> All secrets in environment variables, not code</label>
+                    <label><input type="checkbox"> Using PKCE for SPAs and mobile apps</label>
+                    <label><input type="checkbox"> JWT signatures verified on every request</label>
+                    <label><input type="checkbox"> Access tokens expire in ≤1 hour</label>
+                    <label><input type="checkbox"> Client secrets never in frontend code</label>
+                    <label><input type="checkbox"> HTTPS enforced everywhere</label>
+                    <label><input type="checkbox"> State parameter validated in OAuth</label>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Part of <a href="../index.html">Auth Academy</a> • Built with ❤️</p>
+        </footer>
+    </div>
+
+    <script src="../shared/theme-manager.js"></script>
+</body>
+
+</html>
