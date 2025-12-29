@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Comparison Matrix - Compare All Authentication Methods</title>
+    <meta name="description"
+        content="Compare 20+ authentication types side-by-side. Filter by security, complexity, mobile support, and more.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme.css">
+    <link rel="stylesheet" href="../shared/navigation.css">
+    <link rel="stylesheet" href="../shared/search.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">📊</div>
+                <div>
+                    <h1>Auth Comparison Matrix</h1>
+                    <p class="subtitle">Compare All Authentication Methods</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="../index.html" class="nav-link">← Auth Academy</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Introduction -->
+            <section class="intro-section glass-card">
+                <h2>📊 Compare Authentication Methods</h2>
+                <p>Find the perfect auth method for your project. Filter and compare 15+ authentication types across
+                    multiple criteria.</p>
+            </section>
+
+            <!-- Filters -->
+            <section class="filters-section glass-card">
+                <h3>🔍 Filter Results</h3>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>Use Case:</label>
+                        <select id="filterUseCase">
+                            <option value="all">All Use Cases</option>
+                            <option value="web">Web Applications</option>
+                            <option value="mobile">Mobile Apps</option>
+                            <option value="api">REST APIs</option>
+                            <option value="m2m">Machine-to-Machine</option>
+                            <option value="microservices">Microservices</option>
+                            <option value="iot">IoT Devices</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Security Level:</label>
+                        <select id="filterSecurity">
+                            <option value="all">All Levels</option>
+                            <option value="high">High Security</option>
+                            <option value="medium">Medium Security</option>
+                            <option value="low">Low Security</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Complexity:</label>
+                        <select id="filterComplexity">
+                            <option value="all">All</option>
+                            <option value="simple">Simple</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="complex">Complex</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Status:</label>
+                        <select id="filterStatus">
+                            <option value="all">All</option>
+                            <option value="recommended">Recommended</option>
+                            <option value="deprecated">Deprecated</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-secondary" id="resetFilters">Reset Filters</button>
+                    <span class="results-count" id="resultsCount">15 methods</span>
+                </div>
+            </section>
+
+            <!-- Comparison Table -->
+            <section class="table-section glass-card">
+                <div class="table-wrapper">
+                    <table class="comparison-table" id="comparisonTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-sort="name">Method <span class="sort-icon">↕</span></th>
+                                <th class="sortable" data-sort="security">Security <span class="sort-icon">↕</span></th>
+                                <th class="sortable" data-sort="complexity">Complexity <span class="sort-icon">↕</span>
+                                </th>
+                                <th>Best For</th>
+                                <th>Stateless</th>
+                                <th>Mobile</th>
+                                <th>Status</th>
+                                <th>Learn</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Rows will be dynamically inserted -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Legend -->
+            <section class="legend-section glass-card">
+                <h3>📖 Legend</h3>
+                <div class="legend-grid">
+                    <div class="legend-item">
+                        <span class="security-badge high">⭐⭐⭐⭐⭐</span>
+                        <span>Highest Security</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="security-badge medium">⭐⭐⭐</span>
+                        <span>Medium Security</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="security-badge low">⭐</span>
+                        <span>Low Security</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-badge recommended">✅ Recommended</span>
+                        <span>Best practice</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-badge deprecated">⚠️ Deprecated</span>
+                        <span>Avoid in new projects</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Recommendation -->
+            <section class="recommendation-section glass-card">
+                <h3>🎯 Quick Recommendation</h3>
+                <div class="rec-grid">
+                    <div class="rec-card">
+                        <h4>🌐 Web App (Traditional)</h4>
+                        <p>→ <strong>Session-based Auth</strong></p>
+                        <span class="reason">Server-rendered, easy revocation</span>
+                    </div>
+                    <div class="rec-card">
+                        <h4>⚡ Single Page App</h4>
+                        <p>→ <strong>OAuth 2.0 + PKCE + JWT</strong></p>
+                        <span class="reason">Stateless, scalable, secure</span>
+                    </div>
+                    <div class="rec-card">
+                        <h4>📱 Mobile App</h4>
+                        <p>→ <strong>OAuth 2.0 + PKCE</strong></p>
+                        <span class="reason">Mandatory - no secrets in apps</span>
+                    </div>
+                    <div class="rec-card">
+                        <h4>🔌 Public API</h4>
+                        <p>→ <strong>API Keys</strong></p>
+                        <span class="reason">Simple, rate limiting support</span>
+                    </div>
+                    <div class="rec-card">
+                        <h4>🤖 Service-to-Service</h4>
+                        <p>→ <strong>OAuth Client Credentials</strong></p>
+                        <span class="reason">No user context needed</span>
+                    </div>
+                    <div class="rec-card">
+                        <h4>🏢 Enterprise SSO</h4>
+                        <p>→ <strong>SAML 2.0 or OIDC</strong></p>
+                        <span class="reason">Federated identity</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Part of <a href="../index.html">Auth Academy</a> • Built with ❤️</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="../shared/theme-manager.js"></script>
+    <script src="../shared/navigation.js"></script>
+    <script src="../shared/search.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

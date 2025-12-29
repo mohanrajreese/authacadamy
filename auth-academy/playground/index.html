@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Playground - Live Testing Environment</title>
+    <meta name="description"
+        content="Test JWT tokens, OAuth flows, and API authentication in real-time. Interactive playground for learning auth.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme.css">
+    <link rel="stylesheet" href="../shared/navigation.css">
+    <link rel="stylesheet" href="../shared/search.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">🎮</div>
+                <div>
+                    <h1>Auth Playground</h1>
+                    <p class="subtitle">Live Testing Environment</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="../index.html" class="nav-link">← Auth Academy</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Introduction -->
+            <section class="intro-section glass-card">
+                <h2>🎮 Interactive Auth Playground</h2>
+                <p>Test authentication concepts in real-time. Generate tokens, simulate flows, and see how auth works
+                    under the hood.</p>
+                <div class="playground-tabs">
+                    <button class="tab-btn active" data-tab="jwt">🎫 JWT Generator</button>
+                    <button class="tab-btn" data-tab="api">🔌 API Tester</button>
+                    <button class="tab-btn" data-tab="hash">🔐 Hash Calculator</button>
+                    <button class="tab-btn" data-tab="base64">📝 Base64 Encoder</button>
+                </div>
+            </section>
+
+            <!-- JWT Generator Tab -->
+            <section class="playground-panel glass-card" id="jwt-panel">
+                <h2>🎫 Live JWT Generator</h2>
+                <p>Create and customize JWT tokens in real-time:</p>
+
+                <div class="jwt-builder">
+                    <div class="builder-column">
+                        <h3>Header</h3>
+                        <textarea id="jwtHeader" class="code-editor" spellcheck="false">{
+  "alg": "HS256",
+  "typ": "JWT"
+}</textarea>
+                    </div>
+
+                    <div class="builder-column">
+                        <h3>Payload</h3>
+                        <textarea id="jwtPayload" class="code-editor" spellcheck="false">{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "iat": 1609459200,
+  "exp": 1609545600
+}</textarea>
+                        <div class="quick-claims">
+                            <button class="claim-btn" data-claim="iat">+ iat (now)</button>
+                            <button class="claim-btn" data-claim="exp">+ exp (+1hr)</button>
+                            <button class="claim-btn" data-claim="jti">+ jti (unique)</button>
+                        </div>
+                    </div>
+
+                    <div class="builder-column">
+                        <h3>Secret Key</h3>
+                        <input type="text" id="jwtSecret" class="secret-input" value="your-256-bit-secret"
+                            placeholder="Enter secret key...">
+                        <button class="btn btn-secondary" id="randomSecret">🎲 Random</button>
+                    </div>
+                </div>
+
+                <div class="jwt-output">
+                    <h3>Generated JWT</h3>
+                    <div class="token-display">
+                        <span class="jwt-part header" id="genHeader"></span>.<span class="jwt-part payload"
+                            id="genPayload"></span>.<span class="jwt-part signature" id="genSignature"></span>
+                    </div>
+                    <div class="token-actions">
+                        <button class="btn btn-primary" id="copyJwt">📋 Copy Token</button>
+                        <button class="btn btn-secondary" id="decodeJwt">🔍 Decode</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Tester Tab -->
+            <section class="playground-panel glass-card hidden" id="api-panel">
+                <h2>🔌 API Request Tester</h2>
+                <p>Test authenticated API requests:</p>
+
+                <div class="api-builder">
+                    <div class="request-row">
+                        <select id="httpMethod" class="method-select">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                        <input type="text" id="apiUrl" class="url-input" placeholder="https://api.example.com/endpoint"
+                            value="https://httpbin.org/headers">
+                        <button class="btn btn-primary" id="sendRequest">Send</button>
+                    </div>
+
+                    <div class="auth-options">
+                        <h4>Authentication</h4>
+                        <div class="auth-type-selector">
+                            <label><input type="radio" name="authType" value="bearer" checked> Bearer Token</label>
+                            <label><input type="radio" name="authType" value="apikey"> API Key</label>
+                            <label><input type="radio" name="authType" value="basic"> Basic Auth</label>
+                            <label><input type="radio" name="authType" value="none"> None</label>
+                        </div>
+
+                        <div class="auth-input" id="bearerInput">
+                            <label>Bearer Token:</label>
+                            <input type="text" id="bearerToken" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+                        </div>
+
+                        <div class="auth-input hidden" id="apikeyInput">
+                            <label>Header Name:</label>
+                            <input type="text" id="apiKeyHeader" value="X-API-Key" placeholder="X-API-Key">
+                            <label>API Key:</label>
+                            <input type="text" id="apiKeyValue" placeholder="your-api-key">
+                        </div>
+
+                        <div class="auth-input hidden" id="basicInput">
+                            <label>Username:</label>
+                            <input type="text" id="basicUser" placeholder="username">
+                            <label>Password:</label>
+                            <input type="password" id="basicPass" placeholder="password">
+                        </div>
+                    </div>
+
+                    <div class="headers-section">
+                        <h4>Custom Headers</h4>
+                        <div id="customHeaders">
+                            <div class="header-row">
+                                <input type="text" placeholder="Header name" class="header-name">
+                                <input type="text" placeholder="Header value" class="header-value">
+                                <button class="remove-header">×</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-ghost" id="addHeader">+ Add Header</button>
+                    </div>
+                </div>
+
+                <div class="api-response hidden" id="apiResponse">
+                    <div class="response-header">
+                        <h4>Response</h4>
+                        <span class="status-badge" id="responseStatus"></span>
+                        <span class="response-time" id="responseTime"></span>
+                    </div>
+                    <pre><code id="responseBody"></code></pre>
+                </div>
+            </section>
+
+            <!-- Hash Calculator Tab -->
+            <section class="playground-panel glass-card hidden" id="hash-panel">
+                <h2>🔐 Hash Calculator</h2>
+                <p>Generate cryptographic hashes (used in signatures, PKCE, etc.):</p>
+
+                <div class="hash-builder">
+                    <div class="input-group">
+                        <label>Input Text:</label>
+                        <textarea id="hashInput" class="code-editor"
+                            placeholder="Enter text to hash...">Hello, World!</textarea>
+                    </div>
+
+                    <div class="hash-options">
+                        <label>Algorithm:</label>
+                        <div class="algorithm-buttons">
+                            <button class="algo-btn active" data-algo="SHA-256">SHA-256</button>
+                            <button class="algo-btn" data-algo="SHA-384">SHA-384</button>
+                            <button class="algo-btn" data-algo="SHA-512">SHA-512</button>
+                            <button class="algo-btn" data-algo="SHA-1">SHA-1</button>
+                        </div>
+                    </div>
+
+                    <div class="hash-output">
+                        <div class="output-row">
+                            <label>Hex:</label>
+                            <code id="hashHex"></code>
+                            <button class="copy-btn" data-copy="hashHex">Copy</button>
+                        </div>
+                        <div class="output-row">
+                            <label>Base64:</label>
+                            <code id="hashBase64"></code>
+                            <button class="copy-btn" data-copy="hashBase64">Copy</button>
+                        </div>
+                        <div class="output-row">
+                            <label>Base64URL:</label>
+                            <code id="hashBase64Url"></code>
+                            <button class="copy-btn" data-copy="hashBase64Url">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Base64 Encoder Tab -->
+            <section class="playground-panel glass-card hidden" id="base64-panel">
+                <h2>📝 Base64 Encoder/Decoder</h2>
+                <p>Encode and decode Base64 (used in JWT parts, Basic Auth, etc.):</p>
+
+                <div class="base64-builder">
+                    <div class="encode-decode-row">
+                        <div class="input-side">
+                            <h4>Plain Text / JSON</h4>
+                            <textarea id="plainText" class="code-editor" placeholder="Enter text...">{
+  "sub": "1234567890",
+  "name": "John Doe"
+}</textarea>
+                        </div>
+
+                        <div class="convert-buttons">
+                            <button class="btn btn-primary" id="encodeBtn">Encode →</button>
+                            <button class="btn btn-secondary" id="decodeBtn">← Decode</button>
+                        </div>
+
+                        <div class="output-side">
+                            <h4>Base64 / Base64URL</h4>
+                            <textarea id="encodedText" class="code-editor" placeholder="Base64 output..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="encoding-options">
+                        <label><input type="radio" name="encodingType" value="base64" checked> Standard Base64</label>
+                        <label><input type="radio" name="encodingType" value="base64url"> Base64URL (JWT safe)</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Reference -->
+            <section class="quick-ref glass-card">
+                <h2>📚 Quick Reference</h2>
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <h4>JWT Structure</h4>
+                        <code>header.payload.signature</code>
+                        <p>Each part is Base64URL encoded</p>
+                    </div>
+                    <div class="ref-card">
+                        <h4>Bearer Token</h4>
+                        <code>Authorization: Bearer {token}</code>
+                        <p>Standard way to send JWTs</p>
+                    </div>
+                    <div class="ref-card">
+                        <h4>Basic Auth</h4>
+                        <code>Authorization: Basic {base64(user:pass)}</code>
+                        <p>Simple username/password</p>
+                    </div>
+                    <div class="ref-card">
+                        <h4>API Key</h4>
+                        <code>X-API-Key: {key}</code>
+                        <p>Simple token in header</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Part of <a href="../index.html">Auth Academy</a> • Built with ❤️</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="../shared/theme-manager.js"></script>
+    <script src="../shared/navigation.js"></script>
+    <script src="../shared/search.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

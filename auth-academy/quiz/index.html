@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Quiz - Test Your Knowledge</title>
+    <meta name="description"
+        content="Test your authentication knowledge with interactive quizzes. Learn JWT, OAuth, Sessions, and more.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme.css">
+    <link rel="stylesheet" href="../shared/navigation.css">
+    <link rel="stylesheet" href="../shared/search.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">🎓</div>
+                <div>
+                    <h1>Auth Quiz</h1>
+                    <p class="subtitle">Test Your Knowledge</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="../index.html" class="nav-link">← Auth Academy</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Quiz Selection -->
+            <section class="quiz-selection glass-card" id="quizSelection">
+                <h2>🎓 Choose Your Quiz</h2>
+                <p>Select a topic to test your authentication knowledge:</p>
+
+                <div class="quiz-grid">
+                    <button class="quiz-card" data-quiz="jwt">
+                        <span class="quiz-icon">🎫</span>
+                        <h3>JWT Fundamentals</h3>
+                        <p>10 questions about JSON Web Tokens</p>
+                        <span class="difficulty easy">Beginner</span>
+                    </button>
+
+                    <button class="quiz-card" data-quiz="oauth">
+                        <span class="quiz-icon">🔐</span>
+                        <h3>OAuth 2.0</h3>
+                        <p>10 questions about OAuth flows</p>
+                        <span class="difficulty medium">Intermediate</span>
+                    </button>
+
+                    <button class="quiz-card" data-quiz="security">
+                        <span class="quiz-icon">🛡️</span>
+                        <h3>Auth Security</h3>
+                        <p>10 questions about best practices</p>
+                        <span class="difficulty hard">Advanced</span>
+                    </button>
+
+                    <button class="quiz-card" data-quiz="mixed">
+                        <span class="quiz-icon">🎯</span>
+                        <h3>Mixed Challenge</h3>
+                        <p>10 random questions from all topics</p>
+                        <span class="difficulty hard">All Levels</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Active Quiz -->
+            <section class="active-quiz glass-card hidden" id="activeQuiz">
+                <div class="quiz-header">
+                    <div class="quiz-info">
+                        <span id="quizTitle">JWT Fundamentals</span>
+                        <span class="question-counter">Question <span id="currentQ">1</span> of <span
+                                id="totalQ">10</span></span>
+                    </div>
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quizProgress"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-container" id="questionContainer">
+                    <h3 class="question-text" id="questionText">Loading question...</h3>
+                    <div class="options-list" id="optionsList">
+                        <!-- Options will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn btn-secondary" id="skipBtn">Skip</button>
+                    <button class="btn btn-primary hidden" id="nextBtn">Next Question →</button>
+                </div>
+
+                <div class="explanation hidden" id="explanation">
+                    <h4>📖 Explanation</h4>
+                    <p id="explanationText"></p>
+                </div>
+            </section>
+
+            <!-- Quiz Results -->
+            <section class="quiz-results glass-card hidden" id="quizResults">
+                <div class="results-header">
+                    <span class="results-icon" id="resultsIcon">🏆</span>
+                    <h2 id="resultsTitle">Great Job!</h2>
+                </div>
+
+                <div class="score-display">
+                    <div class="score-circle">
+                        <span class="score-value" id="scoreValue">0</span>
+                        <span class="score-label">/ 10</span>
+                    </div>
+                    <p class="score-percentage" id="scorePercentage">0% Correct</p>
+                </div>
+
+                <div class="results-breakdown">
+                    <div class="breakdown-item correct">
+                        <span class="breakdown-icon">✓</span>
+                        <span id="correctCount">0</span> Correct
+                    </div>
+                    <div class="breakdown-item wrong">
+                        <span class="breakdown-icon">✗</span>
+                        <span id="wrongCount">0</span> Wrong
+                    </div>
+                    <div class="breakdown-item skipped">
+                        <span class="breakdown-icon">→</span>
+                        <span id="skippedCount">0</span> Skipped
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button class="btn btn-primary" id="retryBtn">🔄 Try Again</button>
+                    <button class="btn btn-secondary" id="newQuizBtn">📚 Choose Different Quiz</button>
+                </div>
+
+                <div class="badge-earned hidden" id="badgeEarned">
+                    <h4>🏅 Badge Earned!</h4>
+                    <div class="badge-display">
+                        <span class="badge-icon" id="badgeIcon">🥇</span>
+                        <span class="badge-name" id="badgeName">JWT Expert</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leaderboard -->
+            <section class="leaderboard glass-card">
+                <h3>🏆 Your Stats</h3>
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalQuizzes">0</span>
+                        <span class="stat-label">Quizzes Taken</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="avgScore">0%</span>
+                        <span class="stat-label">Average Score</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="bestScore">0%</span>
+                        <span class="stat-label">Best Score</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalBadges">0</span>
+                        <span class="stat-label">Badges Earned</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Part of <a href="../index.html">Auth Academy</a> • Built with ❤️</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="../shared/theme-manager.js"></script>
+    <script src="../shared/navigation.js"></script>
+    <script src="../shared/search.js"></script>
+    <script src="quiz-data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
