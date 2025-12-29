@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Explainer - Interactive JSON Web Token Visualizer</title>
+    <meta name="description"
+        content="Learn how JSON Web Tokens (JWT) work with this interactive, real-time visualizer. Understand headers, payloads, signatures, and authentication.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h1>JWT Explainer</h1>
+            </div>
+            <p class="tagline">Interactive JSON Web Token Visualizer</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- What is JWT Section -->
+            <section class="intro-section glass-card">
+                <h2>🔐 What is a JWT?</h2>
+                <p>A <strong>JSON Web Token (JWT)</strong> is a compact, URL-safe way to represent claims between two
+                    parties. It's commonly used for <em>authentication</em> and <em>information exchange</em>.</p>
+                <div class="jwt-structure-visual">
+                    <div class="structure-part header-part" data-tooltip="Contains token type and signing algorithm">
+                        <span class="part-label">Header</span>
+                        <span class="part-color">Red</span>
+                    </div>
+                    <div class="structure-dot">.</div>
+                    <div class="structure-part payload-part" data-tooltip="Contains the claims (data)">
+                        <span class="part-label">Payload</span>
+                        <span class="part-color">Purple</span>
+                    </div>
+                    <div class="structure-dot">.</div>
+                    <div class="structure-part signature-part"
+                        data-tooltip="Verifies the token hasn't been tampered with">
+                        <span class="part-label">Signature</span>
+                        <span class="part-color">Cyan</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive JWT Display -->
+            <section class="jwt-display-section glass-card">
+                <div class="section-header">
+                    <h2>🎯 Live JWT Token</h2>
+                    <div class="token-actions">
+                        <button id="copyToken" class="btn btn-secondary" title="Copy Token">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Copy
+                        </button>
+                        <button id="resetToken" class="btn btn-ghost" title="Reset to Default">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                            </svg>
+                            Reset
+                        </button>
+                    </div>
+                </div>
+                <div class="jwt-token-display" id="jwtTokenDisplay">
+                    <span class="jwt-header" id="jwtHeaderDisplay"></span><span class="jwt-dot">.</span><span
+                        class="jwt-payload" id="jwtPayloadDisplay"></span><span class="jwt-dot">.</span><span
+                        class="jwt-signature" id="jwtSignatureDisplay"></span>
+                </div>
+                <div class="token-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Length</span>
+                        <span class="stat-value" id="tokenLength">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Header</span>
+                        <span class="stat-value header-color" id="headerLength">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Payload</span>
+                        <span class="stat-value payload-color" id="payloadLength">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Signature</span>
+                        <span class="stat-value signature-color" id="signatureLength">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Three Column Editor -->
+            <section class="editor-section">
+                <!-- Header Editor -->
+                <div class="editor-card glass-card header-card">
+                    <div class="editor-header">
+                        <div class="editor-title">
+                            <div class="color-indicator header-indicator"></div>
+                            <h3>Header</h3>
+                        </div>
+                        <span class="badge">ALGORITHM & TYPE</span>
+                    </div>
+                    <div class="editor-description">
+                        <p>Specifies the token type (JWT) and signing algorithm</p>
+                    </div>
+                    <div class="algorithm-selector">
+                        <label for="algorithmSelect">Algorithm:</label>
+                        <select id="algorithmSelect" class="algorithm-dropdown">
+                            <option value="HS256" selected>HS256 (HMAC-SHA256)</option>
+                            <option value="HS384">HS384 (HMAC-SHA384)</option>
+                            <option value="HS512">HS512 (HMAC-SHA512)</option>
+                            <option value="RS256">RS256 (RSA-SHA256)</option>
+                            <option value="RS384">RS384 (RSA-SHA384)</option>
+                            <option value="RS512">RS512 (RSA-SHA512)</option>
+                        </select>
+                    </div>
+                    <div class="editor-content">
+                        <textarea id="headerEditor" class="code-editor" spellcheck="false"></textarea>
+                    </div>
+                    <div class="encoded-preview">
+                        <span class="preview-label">Base64URL Encoded:</span>
+                        <code id="headerEncoded" class="encoded-text"></code>
+                    </div>
+                </div>
+
+                <!-- Payload Editor -->
+                <div class="editor-card glass-card payload-card">
+                    <div class="editor-header">
+                        <div class="editor-title">
+                            <div class="color-indicator payload-indicator"></div>
+                            <h3>Payload</h3>
+                        </div>
+                        <span class="badge">CLAIMS DATA</span>
+                    </div>
+                    <div class="editor-description">
+                        <p>Contains the claims — statements about the user and additional metadata.</p>
+                    </div>
+                    <div class="editor-content">
+                        <textarea id="payloadEditor" class="code-editor" spellcheck="false"></textarea>
+                    </div>
+                    <div class="encoded-preview">
+                        <span class="preview-label">Base64URL Encoded:</span>
+                        <code id="payloadEncoded" class="encoded-text"></code>
+                    </div>
+                    <div class="expiration-timer" id="expirationTimer">
+                        <div class="timer-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="timer-content">
+                            <span class="timer-label">Token Expires In:</span>
+                            <span class="timer-value" id="timerValue">--:--:--</span>
+                        </div>
+                    </div>
+                    <div class="claims-helper">
+                        <span class="helper-title">Common Claims:</span>
+                        <div class="claim-tags">
+                            <span class="claim-tag" data-claim="iss" title="Issuer">iss</span>
+                            <span class="claim-tag" data-claim="sub" title="Subject">sub</span>
+                            <span class="claim-tag" data-claim="aud" title="Audience">aud</span>
+                            <span class="claim-tag" data-claim="exp" title="Expiration">exp</span>
+                            <span class="claim-tag" data-claim="iat" title="Issued At">iat</span>
+                            <span class="claim-tag" data-claim="nbf" title="Not Before">nbf</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signature Section -->
+                <div class="editor-card glass-card signature-card">
+                    <div class="editor-header">
+                        <div class="editor-title">
+                            <div class="color-indicator signature-indicator"></div>
+                            <h3>Signature</h3>
+                        </div>
+                        <span class="badge">VERIFICATION</span>
+                    </div>
+                    <div class="editor-description">
+                        <p>Created by signing the header and payload with a secret key.</p>
+                    </div>
+                    <div class="signature-formula">
+                        <div class="formula-box">
+                            <span class="formula-fn">HMACSHA256(</span>
+                            <span class="formula-part header-color">base64UrlEncode(header)</span>
+                            <span class="formula-op">+</span>
+                            <span class="formula-str">"."</span>
+                            <span class="formula-op">+</span>
+                            <span class="formula-part payload-color">base64UrlEncode(payload)</span>
+                            <span class="formula-comma">,</span>
+                            <span class="formula-secret">secret</span>
+                            <span class="formula-fn">)</span>
+                        </div>
+                    </div>
+                    <div class="secret-input-group" id="secretKeyGroup">
+                        <label for="secretKey">Secret Key:</label>
+                        <div class="secret-input-wrapper">
+                            <input type="password" id="secretKey" class="secret-input" value="your-256-bit-secret" />
+                            <button id="toggleSecret" class="toggle-secret-btn" title="Show/Hide Secret">
+                                <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="rsa-keys-group hidden" id="rsaKeysGroup">
+                        <label for="privateKey">Private Key (PEM):</label>
+                        <textarea id="privateKey" class="key-textarea"
+                            placeholder="-----BEGIN PRIVATE KEY-----&#10;...&#10;-----END PRIVATE KEY-----"
+                            spellcheck="false"></textarea>
+                        <label for="publicKey">Public Key (PEM):</label>
+                        <textarea id="publicKey" class="key-textarea"
+                            placeholder="-----BEGIN PUBLIC KEY-----&#10;...&#10;-----END PUBLIC KEY-----"
+                            spellcheck="false"></textarea>
+                        <button id="generateRSAKeys" class="btn btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Generate RSA Keys
+                        </button>
+                    </div>
+                    <div class="verification-status" id="verificationStatus">
+                        <div class="status-icon valid">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <span class="status-text">Signature Valid</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section class="how-it-works-section glass-card">
+                <h2>⚙️ How JWT Authentication Works</h2>
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <h4>User Logs In</h4>
+                        <p>User sends credentials to the server</p>
+                    </div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <h4>Server Validates</h4>
+                        <p>Checks credentials and creates JWT</p>
+                    </div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </div>
+                        <h4>Token Sent</h4>
+                        <p>JWT returned to user's browser</p>
+                    </div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </div>
+                        <h4>Token Used</h4>
+                        <p>JWT sent with every API request</p>
+                    </div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">
+                        <div class="step-number">5</div>
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <h4>Server Verifies</h4>
+                        <p>Validates signature & grants access</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Tips -->
+            <section class="security-section glass-card">
+                <h2>🛡️ JWT Security Best Practices</h2>
+                <div class="security-grid">
+                    <div class="security-tip do">
+                        <div class="tip-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <span>DO</span>
+                        </div>
+                        <ul>
+                            <li>Use strong, random secret keys (256+ bits)</li>
+                            <li>Set short expiration times (15min - 1hr)</li>
+                            <li>Use HTTPS for all transmissions</li>
+                            <li>Validate all claims on the server</li>
+                            <li>Use RS256 for distributed systems</li>
+                        </ul>
+                    </div>
+                    <div class="security-tip dont">
+                        <div class="tip-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            <span>DON'T</span>
+                        </div>
+                        <ul>
+                            <li>Store sensitive data in payload (it's only encoded, not encrypted!)</li>
+                            <li>Use weak or predictable secrets</li>
+                            <li>Store JWTs in localStorage (XSS vulnerable)</li>
+                            <li>Trust tokens without verification</li>
+                            <li>Use algorithm "none" in production</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- QR Code Section -->
+            <section class="qr-section glass-card">
+                <div class="section-header">
+                    <h2>📱 QR Code Generator</h2>
+                    <button id="downloadQR" class="btn btn-secondary hidden">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download QR
+                    </button>
+                </div>
+                <p>Scan this QR code with your mobile device to share the JWT token:</p>
+                <div class="qr-container">
+                    <canvas id="qrCanvas" width="300" height="300"></canvas>
+                    <div class="qr-info">
+                        <p class="qr-warning">⚠️ <strong>Security Note:</strong> QR codes expose your token. Only use in
+                            secure environments!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Decode Any JWT -->
+            <section class="decode-section glass-card">
+                <h2>🔍 Decode Any JWT</h2>
+                <p>Paste any JWT token below to decode and analyze it:</p>
+                <div class="decode-input-wrapper">
+                    <textarea id="decodeInput" class="decode-input"
+                        placeholder="Paste your JWT here (e.g., eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...)"></textarea>
+                    <button id="decodeBtn" class="btn btn-primary">Decode Token</button>
+                </div>
+                <div id="decodeResult" class="decode-result hidden">
+                    <div class="decode-part">
+                        <h4 class="header-color">Header</h4>
+                        <pre id="decodedHeader"></pre>
+                    </div>
+                    <div class="decode-part">
+                        <h4 class="payload-color">Payload</h4>
+                        <pre id="decodedPayload"></pre>
+                    </div>
+                    <div class="decode-status" id="decodeStatus"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with ❤️ to make JWT understandable </p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="qrcode.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

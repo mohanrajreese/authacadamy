@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Academy - Master Authentication & Authorization</title>
+    <meta name="description"
+        content="Learn authentication with interactive tools. JWT, OAuth 2.0, Sessions, API Keys, and more. Free, open-source, and beginner-friendly.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="hub-styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="hero-content">
+                <div class="logo-large">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h1>Auth Academy</h1>
+                </div>
+                <p class="hero-tagline">Master Authentication & Authorization</p>
+                <p class="hero-description">
+                    Learn how authentication works with <strong>interactive tools</strong> and <strong>visual
+                        explainers</strong>.
+                    No boring docs. Just hands-on learning.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">Interactive Tools</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">20+</div>
+                        <div class="stat-label">Auth Types Covered</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Free & Open Source</div>
+                    </div>
+                </div>
+                <div class="hero-cta">
+                    <a href="#tools" class="btn btn-primary btn-large">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        Start Learning
+                    </a>
+                    <a href="https://github.com/yourusername/auth-academy" class="btn btn-secondary btn-large"
+                        target="_blank">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="auth-types-orbit">
+                    <div class="orbit-center">🔐</div>
+                    <div class="orbit-item orbit-1" data-type="JWT">JWT</div>
+                    <div class="orbit-item orbit-2" data-type="OAuth">OAuth</div>
+                    <div class="orbit-item orbit-3" data-type="API Keys">Keys</div>
+                    <div class="orbit-item orbit-4" data-type="Sessions">Session</div>
+                    <div class="orbit-item orbit-5" data-type="MFA">MFA</div>
+                    <div class="orbit-item orbit-6" data-type="SSO">SSO</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tools Section -->
+        <main class="main-content">
+            <section id="tools" class="tools-section">
+                <div class="section-header">
+                    <h2>🔧 Interactive Learning Tools</h2>
+                    <p>Hands-on explainers that make complex auth concepts simple</p>
+                </div>
+
+                <div class="tools-grid">
+                    <!-- JWT Explainer -->
+                    <a href="jwt-explainer/index.html" class="tool-card live">
+                        <div class="tool-status">
+                            <span class="status-badge live">✨ Live</span>
+                        </div>
+                        <div class="tool-icon">🎫</div>
+                        <h3>JWT Explainer</h3>
+                        <p>Decode, encode, and understand JSON Web Tokens with real-time visualization.</p>
+                        <div class="tool-features">
+                            <span class="feature">6 Algorithms</span>
+                            <span class="feature">QR Codes</span>
+                            <span class="feature">Live Timer</span>
+                            <span class="feature">RSA Support</span>
+                        </div>
+                        <div class="tool-footer">
+                            <span class="learn-more">Explore JWT →</span>
+                        </div>
+                    </a>
+
+                    <!-- OAuth Visualizer -->
+                    <a href="oauth-visualizer/index.html" class="tool-card live">
+                        <div class="tool-status">
+                            <span class="status-badge live">✨ Live</span>
+                        </div>
+                        <div class="tool-icon">🔐</div>
+                        <h3>OAuth 2.0 Visualizer</h3>
+                        <p>Watch OAuth flows animate step-by-step. Understand authorization code, PKCE, and more.</p>
+                        <div class="tool-features">
+                            <span class="feature">5 Flows</span>
+                            <span class="feature">PKCE Gen</span>
+                            <span class="feature">Animations</span>
+                            <span class="feature">Token Inspector</span>
+                        </div>
+                        <div class="tool-footer">
+                            <span class="learn-more">Explore OAuth →</span>
+                        </div>
+                    </a>
+
+                    <!-- Session vs Token -->
+                    <a href="session-vs-token/index.html" class="tool-card live">
+                        <div class="tool-status">
+                            <span class="status-badge live">✨ Live</span>
+                        </div>
+                        <div class="tool-icon">⚖️</div>
+                        <h3>Session vs Token</h3>
+                        <p>Compare session-based and token-based auth side-by-side. See scalability impacts.</p>
+                        <div class="tool-features">
+                            <span class="feature">Live Demo</span>
+                            <span class="feature">Scalability</span>
+                            <span class="feature">Security</span>
+                            <span class="feature">Use Cases</span>
+                        </div>
+                        <div class="tool-footer">
+                            <span class="learn-more">Compare Now →</span>
+                        </div>
+                    </a>
+
+                    <!-- API Key Security -->
+                    <a href="api-key-security/index.html" class="tool-card live">
+                        <div class="tool-status">
+                            <span class="status-badge live">✨ Live</span>
+                        </div>
+                        <div class="tool-icon">🔑</div>
+                        <h3>API Key Security</h3>
+                        <p>Generate secure API keys, analyze vulnerabilities, and learn best practices.</p>
+                        <div class="tool-features">
+                            <span class="feature">Generator</span>
+                            <span class="feature">Scanner</span>
+                            <span class="feature">Analyzer</span>
+                            <span class="feature">Best Practices</span>
+                        </div>
+                        <div class="tool-footer">
+                            <span class="learn-more">Secure Keys →</span>
+                        </div>
+                    </a>
+
+                    <!-- Auth Decision Tree -->
+                    <a href="auth-decision-tree/index.html" class="tool-card live">
+                        <div class="tool-status">
+                            <span class="status-badge live">✨ Live</span>
+                        </div>
+                        <div class="tool-icon">🌲</div>
+                        <h3>Auth Decision Tree</h3>
+                        <p>Answer a few questions and get the perfect auth recommendation for your project.</p>
+                        <div class="tool-features">
+                            <span class="feature">Interactive</span>
+                            <span class="feature">Smart AI</span>
+                            <span class="feature">Code Examples</span>
+                            <span class="feature">Comparisons</span>
+                        </div>
+                        <div class="tool-footer">
+                            <span class="learn-more">Find Your Auth →</span>
+                        </div>
+                    </a>
+
+                    <!-- MFA Simulator - Coming Soon -->
+                    <div class="tool-card coming-soon">
+                        <div class="tool-status">
+                            <span class="status-badge coming">🔄 Coming Soon</span>
+                        </div>
+                        <div class="tool-icon">🛡️</div>
+                        <h3>MFA Simulator</h3>
+                        <p>Experience multi-factor authentication. TOTP, SMS, push notifications, and more.</p>
+                        <div class="tool-features">
+                            <span class="feature">TOTP</span>
+                            <span class="feature">SMS</span>
+                            <span class="feature">Push</span>
+                            <span class="feature">Backup Codes</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Learning Paths -->
+            <section class="paths-section">
+                <div class="section-header">
+                    <h2>🗺️ Learning Paths</h2>
+                    <p>Structured journeys from beginner to expert</p>
+                </div>
+
+                <div class="paths-grid">
+                    <div class="path-card beginner">
+                        <div class="path-icon">🌱</div>
+                        <h3>Beginner Path</h3>
+                        <p>Start your auth journey</p>
+                        <ol class="path-steps">
+                            <li><a href="session-vs-token/index.html">Session vs Token</a></li>
+                            <li><a href="jwt-explainer/index.html">JWT Basics</a></li>
+                            <li><a href="api-key-security/index.html">API Keys</a></li>
+                            <li><a href="oauth-visualizer/index.html">OAuth 2.0</a></li>
+                        </ol>
+                    </div>
+
+                    <div class="path-card intermediate">
+                        <div class="path-icon">🚀</div>
+                        <h3>API Gateway Path</h3>
+                        <p>Build production auth</p>
+                        <ol class="path-steps">
+                            <li><a href="jwt-explainer/index.html">JWT Implementation</a></li>
+                            <li><a href="oauth-visualizer/index.html">OAuth Integration</a></li>
+                            <li><a href="api-key-security/index.html">Rate Limiting</a></li>
+                            <li>mTLS <span class="soon">(soon)</span></li>
+                        </ol>
+                    </div>
+
+                    <div class="path-card advanced">
+                        <div class="path-icon">⚡</div>
+                        <h3>Security Expert Path</h3>
+                        <p>Master advanced concepts</p>
+                        <ol class="path-steps">
+                            <li>SAML <span class="soon">(soon)</span></li>
+                            <li>WebAuthn <span class="soon">(soon)</span></li>
+                            <li>Zero Trust <span class="soon">(soon)</span></li>
+                            <li>Threat Modeling <span class="soon">(soon)</span></li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Auth Types Overview -->
+            <section class="auth-types-section">
+                <div class="section-header">
+                    <h2>📚 20+ Authentication Types Explained</h2>
+                    <p>From basic to cutting-edge security</p>
+                </div>
+
+                <div class="auth-types-grid">
+                    <div class="auth-type-card tier-1">
+                        <span class="tier-label">Essential</span>
+                        <div class="type-name">JWT</div>
+                        <div class="type-status">✅ Live</div>
+                    </div>
+                    <div class="auth-type-card tier-1">
+                        <span class="tier-label">Essential</span>
+                        <div class="type-name">OAuth 2.0</div>
+                        <div class="type-status">✅ Live</div>
+                    </div>
+                    <div class="auth-type-card tier-1">
+                        <span class="tier-label">Essential</span>
+                        <div class="type-name">Sessions</div>
+                        <div class="type-status">✅ Live</div>
+                    </div>
+                    <div class="auth-type-card tier-1">
+                        <span class="tier-label">Essential</span>
+                        <div class="type-name">API Keys</div>
+                        <div class="type-status">✅ Live</div>
+                    </div>
+                    <div class="auth-type-card tier-2">
+                        <span class="tier-label">Important</span>
+                        <div class="type-name">OIDC</div>
+                        <div class="type-status">📖 Docs</div>
+                    </div>
+                    <div class="auth-type-card tier-2">
+                        <span class="tier-label">Important</span>
+                        <div class="type-name">MFA</div>
+                        <div class="type-status">🔄 Soon</div>
+                    </div>
+                    <div class="auth-type-card tier-2">
+                        <span class="tier-label">Important</span>
+                        <div class="type-name">SSO</div>
+                        <div class="type-status">📖 Docs</div>
+                    </div>
+                    <div class="auth-type-card tier-2">
+                        <span class="tier-label">Important</span>
+                        <div class="type-name">Basic Auth</div>
+                        <div class="type-status">📖 Docs</div>
+                    </div>
+                    <div class="auth-type-card tier-3">
+                        <span class="tier-label">Advanced</span>
+                        <div class="type-name">SAML</div>
+                        <div class="type-status">🔄 Soon</div>
+                    </div>
+                    <div class="auth-type-card tier-3">
+                        <span class="tier-label">Advanced</span>
+                        <div class="type-name">mTLS</div>
+                        <div class="type-status">🔄 Soon</div>
+                    </div>
+                    <div class="auth-type-card tier-3">
+                        <span class="tier-label">Advanced</span>
+                        <div class="type-name">WebAuthn</div>
+                        <div class="type-status">🔄 Soon</div>
+                    </div>
+                    <div class="auth-type-card tier-3">
+                        <span class="tier-label">Advanced</span>
+                        <div class="type-name">Kerberos</div>
+                        <div class="type-status">📖 Docs</div>
+                    </div>
+                </div>
+                <div class="view-all">
+                    <a href="auth-types-complete.html" class="btn btn-secondary">View All 20+ Types →</a>
+                </div>
+            </section>
+
+            <!-- Why Auth Academy -->
+            <section class="why-section">
+                <div class="section-header">
+                    <h2>💎 Why Auth Academy?</h2>
+                </div>
+
+                <div class="why-grid">
+                    <div class="why-card">
+                        <div class="why-icon">🎯</div>
+                        <h3>Interactive, Not Boring</h3>
+                        <p>No walls of text. Play with real tools, see animations, understand by doing.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">🎨</div>
+                        <h3>Beautiful & Modern</h3>
+                        <p>Premium design that makes learning enjoyable. Glassmorphic UI, smooth animations.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">🔒</div>
+                        <h3>Real Security</h3>
+                        <p>Actual crypto algorithms (Web Crypto API). Not fake demos - the real thing.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">💯</div>
+                        <h3>100% Free</h3>
+                        <p>Open source, zero ads, no paywall. Education should be accessible to everyone.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">🌍</div>
+                        <h3>Works Offline</h3>
+                        <p>Client-side only. No servers, no tracking, no BS. Just pure learning.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">⚡</div>
+                        <h3>Beginner Friendly</h3>
+                        <p>Start from zero. Clear explanations, visual examples, step-by-step guidance.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Auth Academy</h4>
+                    <p>Making authentication accessible through interactive education.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/yourusername/auth-academy" target="_blank" aria-label="GitHub">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                        </a>
+                        <a href="https://twitter.com/authacademy" target="_blank" aria-label="Twitter">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><a href="jwt-explainer/index.html">JWT Explainer</a></li>
+                        <li><a href="oauth-visualizer/index.html">OAuth Visualizer</a></li>
+                        <li><a href="session-vs-token/index.html">Session vs Token</a></li>
+                        <li><a href="api-key-security/index.html">API Key Security</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="auth-types-complete.html">All Auth Types</a></li>
+                        <li><a href="roadmap.html">Roadmap</a></li>
+                        <li><a
+                                href="https://github.com/yourusername/auth-academy/blob/main/CONTRIBUTING.md">Contributing</a>
+                        </li>
+                        <li><a href="https://github.com/yourusername/auth-academy/blob/main/LICENSE">License (MIT)</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Built with ❤️ by the community • <a href="https://github.com/yourusername/auth-academy">Open
+                        Source</a> • MIT License</p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

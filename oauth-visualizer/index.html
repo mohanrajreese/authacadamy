@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth 2.0 Visualizer - Interactive Flow Explorer</title>
+    <meta name="description"
+        content="Learn OAuth 2.0 with interactive flow diagrams. Understand Authorization Code, Client Credentials, PKCE, and more with real-time visualization.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div>
+                    <h1>OAuth 2.0 Visualizer</h1>
+                    <p class="subtitle">Interactive Flow Explorer</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="../jwt-explainer/index.html" class="nav-link">JWT Explainer</a>
+                <a href="#" class="nav-link active">OAuth 2.0</a>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Introduction -->
+            <section class="intro-section glass-card">
+                <h2>🔐 What is OAuth 2.0?</h2>
+                <p><strong>OAuth 2.0</strong> is an <em>authorization framework</em> that allows third-party
+                    applications to access user resources without sharing passwords. It's the protocol behind "Login
+                    with Google", "Connect to Facebook", and countless API integrations.</p>
+                <div class="key-concepts">
+                    <div class="concept-card">
+                        <div class="concept-icon">🔑</div>
+                        <h3>Authorization</h3>
+                        <p>Grants <strong>access</strong> to resources</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🎭</div>
+                        <h3>Not Authentication</h3>
+                        <p>Doesn't verify <strong>who you are</strong><br>(Use OIDC for that)</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🎫</div>
+                        <h3>Token-Based</h3>
+                        <p>Uses <strong>access tokens</strong> for API calls</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🔒</div>
+                        <h3>Secure Delegation</h3>
+                        <p>No password sharing required</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Flow Selector -->
+            <section class="flow-selector-section glass-card">
+                <h2>🎯 Choose an OAuth 2.0 Grant Type</h2>
+                <p>Select a flow to see how it works step-by-step:</p>
+
+                <div class="flow-buttons">
+                    <button class="flow-btn active" data-flow="authorization-code">
+                        <div class="flow-icon">📝</div>
+                        <div class="flow-info">
+                            <h3>Authorization Code</h3>
+                            <p>Most secure, recommended for web & mobile apps</p>
+                            <span class="badge recommended">Recommended</span>
+                        </div>
+                    </button>
+
+                    <button class="flow-btn" data-flow="pkce">
+                        <div class="flow-icon">🔐</div>
+                        <div class="flow-info">
+                            <h3>PKCE (Enhanced Security)</h3>
+                            <p>Auth Code + Proof Key, mandatory for mobile/SPA</p>
+                            <span class="badge modern">Modern Standard</span>
+                        </div>
+                    </button>
+
+                    <button class="flow-btn" data-flow="client-credentials">
+                        <div class="flow-icon">🤖</div>
+                        <div class="flow-info">
+                            <h3>Client Credentials</h3>
+                            <p>Machine-to-machine, no user involvement</p>
+                            <span class="badge">M2M</span>
+                        </div>
+                    </button>
+
+                    <button class="flow-btn deprecated" data-flow="implicit">
+                        <div class="flow-icon">⚠️</div>
+                        <div class="flow-info">
+                            <h3>Implicit Flow</h3>
+                            <p>Legacy, tokens in URL fragment</p>
+                            <span class="badge deprecated-badge">Deprecated</span>
+                        </div>
+                    </button>
+
+                    <button class="flow-btn deprecated" data-flow="password">
+                        <div class="flow-icon">🔑</div>
+                        <div class="flow-info">
+                            <h3>Resource Owner Password</h3>
+                            <p>Legacy, requires password sharing</p>
+                            <span class="badge deprecated-badge">Deprecated</span>
+                        </div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Flow Visualization -->
+            <section class="flow-viz-section glass-card">
+                <div class="section-header">
+                    <h2>🎬 <span id="flowTitle">Authorization Code Flow</span></h2>
+                    <div class="controls">
+                        <button id="playBtn" class="btn btn-primary">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            Play Animation
+                        </button>
+                        <button id="resetBtn" class="btn btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                            </svg>
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Flow Diagram Canvas -->
+                <div class="flow-canvas" id="flowCanvas">
+                    <!-- Actors -->
+                    <div class="actor user-actor" id="userActor">
+                        <div class="actor-icon">👤</div>
+                        <div class="actor-label">User</div>
+                    </div>
+
+                    <div class="actor app-actor" id="appActor">
+                        <div class="actor-icon">💻</div>
+                        <div class="actor-label">Your Application</div>
+                    </div>
+
+                    <div class="actor auth-actor" id="authActor">
+                        <div class="actor-icon">🔐</div>
+                        <div class="actor-label">Authorization Server</div>
+                    </div>
+
+                    <div class="actor api-actor" id="apiActor">
+                        <div class="actor-icon">🌐</div>
+                        <div class="actor-label">Resource API</div>
+                    </div>
+
+                    <!-- Arrows will be dynamically created -->
+                    <svg class="flow-arrows" id="flowArrows">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#6366f1" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <!-- Step Description -->
+                <div class="step-description" id="stepDescription">
+                    <div class="step-number">Step <span id="currentStep">0</span> of <span id="totalSteps">0</span>
+                    </div>
+                    <h3 id="stepTitle">Ready to begin</h3>
+                    <p id="stepText">Click "Play Animation" to see the OAuth flow in action!</p>
+                    <div class="step-code hidden" id="stepCode">
+                        <div class="code-header">
+                            <span class="code-label">HTTP Request/Response:</span>
+                            <button class="copy-code-btn" id="copyCodeBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code id="stepCodeContent"></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Tools -->
+            <section class="tools-section">
+                <div class="tool-card glass-card">
+                    <h2>🔧 PKCE Challenge Generator</h2>
+                    <p>Generate the Proof Key for Code Exchange (PKCE) values used in modern OAuth flows:</p>
+
+                    <div class="tool-controls">
+                        <button id="generatePKCE" class="btn btn-primary">Generate PKCE Pair</button>
+                    </div>
+
+                    <div class="pkce-output hidden" id="pkceOutput">
+                        <div class="output-field">
+                            <label>Code Verifier (random, 43-128 chars):</label>
+                            <div class="code-display">
+                                <code id="codeVerifier"></code>
+                                <button class="copy-btn" data-copy="codeVerifier">Copy</button>
+                            </div>
+                            <small>Keep this secret! Sent in token request.</small>
+                        </div>
+
+                        <div class="output-field">
+                            <label>Code Challenge (SHA-256 hash):</label>
+                            <div class="code-display">
+                                <code id="codeChallenge"></code>
+                                <button class="copy-btn" data-copy="codeChallenge">Copy</button>
+                            </div>
+                            <small>Sent in authorization request (public).</small>
+                        </div>
+
+                        <div class="output-field">
+                            <label>Challenge Method:</label>
+                            <div class="code-display">
+                                <code>S256</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card glass-card">
+                    <h2>🎫 Token Inspector</h2>
+                    <p>Decode and inspect OAuth access tokens:</p>
+
+                    <textarea id="tokenInput" class="token-input"
+                        placeholder="Paste an access token here (JWT format)..."></textarea>
+                    <button id="inspectToken" class="btn btn-primary">Inspect Token</button>
+
+                    <div class="token-output hidden" id="tokenOutput">
+                        <div class="token-section">
+                            <h4>Header</h4>
+                            <pre id="tokenHeader"></pre>
+                        </div>
+                        <div class="token-section">
+                            <h4>Payload / Claims</h4>
+                            <pre id="tokenPayload"></pre>
+                        </div>
+                        <div class="token-meta">
+                            <span class="meta-item">Type: <strong id="tokenType"></strong></span>
+                            <span class="meta-item">Algorithm: <strong id="tokenAlgo"></strong></span>
+                            <span class="meta-item" id="tokenExpiry"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Scopes Explainer -->
+            <section class="scopes-section glass-card">
+                <h2>🔍 OAuth Scopes Explained</h2>
+                <p>Scopes define the permissions requested by the application. They limit what the app can access:</p>
+
+                <div class="scopes-grid">
+                    <div class="scope-card">
+                        <div class="scope-header">
+                            <span class="scope-name">read:user</span>
+                            <span class="scope-level low">Low Risk</span>
+                        </div>
+                        <p>Read-only access to user profile information (name, email, avatar).</p>
+                    </div>
+
+                    <div class="scope-card">
+                        <div class="scope-header">
+                            <span class="scope-name">write:posts</span>
+                            <span class="scope-level medium">Medium Risk</span>
+                        </div>
+                        <p>Create, update posts on behalf of the user.</p>
+                    </div>
+
+                    <div class="scope-card">
+                        <div class="scope-header">
+                            <span class="scope-name">delete:account</span>
+                            <span class="scope-level high">High Risk</span>
+                        </div>
+                        <p>Dangerous! Permanently delete user account.</p>
+                    </div>
+
+                    <div class="scope-card">
+                        <div class="scope-header">
+                            <span class="scope-name">offline_access</span>
+                            <span class="scope-level medium">Medium Risk</span>
+                        </div>
+                        <p>Request a refresh token for long-term access.</p>
+                    </div>
+                </div>
+
+                <div class="scope-builder">
+                    <h3>Build Your Scope Request</h3>
+                    <div class="scope-checkboxes">
+                        <label><input type="checkbox" class="scope-checkbox" value="read:user" checked>
+                            read:user</label>
+                        <label><input type="checkbox" class="scope-checkbox" value="read:email"> read:email</label>
+                        <label><input type="checkbox" class="scope-checkbox" value="write:posts"> write:posts</label>
+                        <label><input type="checkbox" class="scope-checkbox" value="read:followers">
+                            read:followers</label>
+                        <label><input type="checkbox" class="scope-checkbox" value="offline_access">
+                            offline_access</label>
+                    </div>
+                    <div class="scope-output">
+                        <label>Scope Parameter:</label>
+                        <code id="scopeParam">read:user</code>
+                        <button class="copy-btn" onclick="copyScope()">Copy</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Best Practices -->
+            <section class="security-section glass-card">
+                <h2>🛡️ OAuth 2.0 Security Best Practices</h2>
+                <div class="security-grid">
+                    <div class="security-tip do">
+                        <div class="tip-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <span>DO</span>
+                        </div>
+                        <ul>
+                            <li><strong>Use Authorization Code + PKCE</strong> for all public clients (SPAs, mobile)
+                            </li>
+                            <li><strong>Validate redirect URIs</strong> strictly (no wildcards!)</li>
+                            <li><strong>Use state parameter</strong> to prevent CSRF attacks</li>
+                            <li><strong>Keep client secrets secure</strong> (never in browser code)</li>
+                            <li><strong>Use short-lived access tokens</strong> (15min-1hr)</li>
+                            <li><strong>Implement token rotation</strong> for refresh tokens</li>
+                            <li><strong>Always use HTTPS</strong> in production</li>
+                            <li><strong>Validate tokens on every</strong> API request</li>
+                        </ul>
+                    </div>
+                    <div class="security-tip dont">
+                        <div class="tip-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            <span>DON'T</span>
+                        </div>
+                        <ul>
+                            <li><strong>Don't use Implicit Flow</strong> (deprecated, tokens in URL)</li>
+                            <li><strong>Don't use Password Grant</strong> (defeats OAuth purpose)</li>
+                            <li><strong>Don't skip PKCE</strong> for mobile/SPA apps</li>
+                            <li><strong>Don't store tokens in localStorage</strong> (XSS vulnerable)</li>
+                            <li><strong>Don't use GET for token requests</strong> (POST only)</li>
+                            <li><strong>Don't trust client-side validation</strong> alone</li>
+                            <li><strong>Don't reuse authorization codes</strong> (one-time use)</li>
+                            <li><strong>Don't ignore token expiration</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Common Use Cases -->
+            <section class="use-cases-section glass-card">
+                <h2>🎯 Common OAuth 2.0 Use Cases</h2>
+                <div class="use-case-grid">
+                    <div class="use-case-card">
+                        <h3>🌐 "Login with Google"</h3>
+                        <p><strong>Flow:</strong> Authorization Code + PKCE</p>
+                        <p><strong>Scopes:</strong> openid, profile, email</p>
+                        <p>User authenticates with Google, your app receives basic profile info without seeing Google
+                            password.</p>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3>📱 Mobile App Authorization</h3>
+                        <p><strong>Flow:</strong> Authorization Code + PKCE (mandatory)</p>
+                        <p><strong>Scopes:</strong> Custom API scopes</p>
+                        <p>Mobile apps use system browser for auth, then deep-link back with authorization code.</p>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3>🤖 Backend Service Integration</h3>
+                        <p><strong>Flow:</strong> Client Credentials</p>
+                        <p><strong>Scopes:</strong> Service-level permissions</p>
+                        <p>Server-to-server communication, no user involved. Using client ID + secret.</p>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3>⚡ Single Page Application</h3>
+                        <p><strong>Flow:</strong> Authorization Code + PKCE</p>
+                        <p><strong>Scopes:</strong> API access scopes</p>
+                        <p>Browser-based app uses PKCE to securely obtain tokens without client secret.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comparison Table -->
+            <section class="comparison-section glass-card">
+                <h2>⚖️ Grant Type Comparison</h2>
+                <div class="comparison-table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Grant Type</th>
+                                <th>Client Type</th>
+                                <th>User Involved?</th>
+                                <th>Security</th>
+                                <th>Recommended?</th>
+                                <th>Use When</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="recommended-row">
+                                <td><strong>Authorization Code + PKCE</strong></td>
+                                <td>Web, Mobile, SPA</td>
+                                <td>✅ Yes</td>
+                                <td><span class="security-badge high">⭐⭐⭐⭐⭐</span></td>
+                                <td><span class="badge recommended">✅ Yes</span></td>
+                                <td>Almost all scenarios</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Client Credentials</strong></td>
+                                <td>Backend Service</td>
+                                <td>❌ No</td>
+                                <td><span class="security-badge high">⭐⭐⭐⭐⭐</span></td>
+                                <td><span class="badge recommended">✅ Yes</span></td>
+                                <td>Machine-to-machine</td>
+                            </tr>
+                            <tr class="deprecated-row">
+                                <td><strong>Implicit</strong></td>
+                                <td>SPA (legacy)</td>
+                                <td>✅ Yes</td>
+                                <td><span class="security-badge low">⭐⭐</span></td>
+                                <td><span class="badge deprecated-badge">❌ No</span></td>
+                                <td>Never (use PKCE instead)</td>
+                            </tr>
+                            <tr class="deprecated-row">
+                                <td><strong>Password</strong></td>
+                                <td>Trusted Apps</td>
+                                <td>✅ Yes</td>
+                                <td><span class="security-badge low">⭐⭐</span></td>
+                                <td><span class="badge deprecated-badge">❌ No</span></td>
+                                <td>Never (defeats OAuth purpose)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with ❤️ to demystify OAuth 2.0 | Part of <a href="../index.html">Auth Academy</a></p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

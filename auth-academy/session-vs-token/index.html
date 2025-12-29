@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session vs Token Auth - Interactive Comparison</title>
+    <meta name="description"
+        content="Compare session-based and token-based authentication side-by-side. See scalability, security, and implementation differences.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">⚖️</div>
+                <div>
+                    <h1>Session vs Token Authentication</h1>
+                    <p class="subtitle">Interactive Comparison</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="../index.html" class="nav-link">← Auth Academy</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Introduction -->
+            <section class="intro-section glass-card">
+                <h2>⚖️ The Fundamental Choice</h2>
+                <p>Every authentication system must decide: Store user state on the <strong>server</strong> (sessions)
+                    or in the <strong>client</strong> (tokens)?</p>
+                <p>This choice affects scalability, security, and implementation. Let's compare both approaches.</p>
+            </section>
+
+            <!-- Side-by-Side Comparison -->
+            <section class="comparison-section">
+                <div class="comparison-grid">
+                    <!-- Session-Based -->
+                    <div class="auth-card session-card glass-card">
+                        <div class="card-header session-header">
+                            <div class="auth-icon">🍪</div>
+                            <h2>Session-Based</h2>
+                            <span class="auth-badge">Stateful</span>
+                        </div>
+
+                        <div class="flow-viz" id="sessionFlow">
+                            <div class="flow-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <strong>Login</strong>
+                                    <p>User sends credentials</p>
+                                </div>
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <strong>Server Creates Session</strong>
+                                    <p>Stores in memory/database/Redis</p>
+                                    <code class="inline-code">sessionId: abc123</code>
+                                </div>
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <strong>Set Cookie</strong>
+                                    <p>Server sends session ID</p>
+                                    <code class="inline-code">Set-Cookie: sessionId=abc123</code>
+                                </div>
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <strong>Subsequent Requests</strong>
+                                    <p>Cookie sent automatically</p>
+                                    <code class="inline-code">Cookie: sessionId=abc123</code>
+                                </div>
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step">
+                                <div class="step-number">5</div>
+                                <div class="step-content">
+                                    <strong>Server Lookup</strong>
+                                    <p>Finds session in storage</p>
+                                    <div class="storage-viz">
+                                        <div class="storage-item">📦 Server Memory</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="characteristics">
+                            <h3>Key Characteristics</h3>
+                            <ul>
+                                <li><span class="char-icon">💾</span> Server stores user state</li>
+                                <li><span class="char-icon">🍪</span> Uses HTTP cookies</li>
+                                <li><span class="char-icon">🔒</span> Easy to revoke sessions</li>
+                                <li><span class="char-icon">⚠️</span> CSRF vulnerable (needs protection)</li>
+                                <li><span class="char-icon">📊</span> Can store complex data</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Token-Based -->
+                    <div class="auth-card token-card glass-card">
+                        <div class="card-header token-header">
+                            <div class="auth-icon">🎫</div>
+                            <h2>Token-Based</h2>
+                            <span class="auth-badge">Stateless</span>
+                        </div>
+
+                        <div class="flow-viz" id="tokenFlow">
+                            <div class="flow-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <strong>Login</strong>
+                                    <p>User sends credentials</p>
+                                </div>
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <strong>Server Creates JWT</strong>
+                                    <p>Signs token with secret key</p>
+                                    <code class="inline-code">eyJhbGci...</code>
+                                </div>
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <strong>Returns Token</strong>
+                                    <p>Client stores token</p>
+                                    <code class="inline-code">{"token": "eyJ..."}</code>
+                                </div>
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <strong>Subsequent Requests</strong>
+                                    <p>Token in Authorization header</p>
+                                    <code class="inline-code">Authorization: Bearer eyJ...</code>
+                                </div>
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-step">
+                                <div class="step-number">5</div>
+                                <div class="step-content">
+                                    <strong>Server Verifies</strong>
+                                    <p>Validates signature (no lookup!)</p>
+                                    <div class="storage-viz">
+                                        <div class="storage-item stateless">✨ No Server State</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="characteristics">
+                            <h3>Key Characteristics</h3>
+                            <ul>
+                                <li><span class="char-icon">✨</span> Server stores NO state</li>
+                                <li><span class="char-icon">📄</span> Self-contained token (JWT)</li>
+                                <li><span class="char-icon">🌐</span> Works across domains</li>
+                                <li><span class="char-icon">⚠️</span> Hard to revoke tokens</li>
+                                <li><span class="char-icon">📱</span> Mobile-friendly</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Scalability Simulator -->
+            <section class="scalability-section glass-card">
+                <h2>📈 Scalability Comparison</h2>
+                <p>See how each approach handles multiple servers:</p>
+
+                <div class="server-controls">
+                    <button class="btn btn-secondary" id="addServer">➕ Add Server</button>
+                    <button class="btn btn-secondary" id="removeServer">➖ Remove Server</button>
+                    <span class="server-count">Servers: <strong id="serverCount">1</strong></span>
+                </div>
+
+                <div class="scalability-viz">
+                    <div class="approach-viz">
+                        <h3>Session-Based</h3>
+                        <div class="servers" id="sessionServers">
+                            <div class="server">
+                                <div class="server-icon">🖥️</div>
+                                <div class="server-label">Server 1</div>
+                                <div class="session-storage">
+                                    <div class="session-icon">📦</div>
+                                    <span>Sessions</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scalability-issue hidden" id="sessionIssue">
+                            <div class="issue-badge">⚠️ Issue</div>
+                            <p>Sessions not shared! Needs:</p>
+                            <ul>
+                                <li>Sticky sessions (load balancer)</li>
+                                <li>OR shared storage (Redis)</li>
+                                <li>OR session replication</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="approach-viz">
+                        <h3>Token-Based</h3>
+                        <div class="servers" id="tokenServers">
+                            <div class="server">
+                                <div class="server-icon">🖥️</div>
+                                <div class="server-label">Server 1</div>
+                                <div class="session-storage stateless-marker">
+                                    <div class="session-icon">✨</div>
+                                    <span>Stateless</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scalability-success">
+                            <div class="success-badge">✅ Works Great!</div>
+                            <p>All servers can verify tokens independently. No shared state needed!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Comparison -->
+            <section class="security-comparison glass-card">
+                <h2>🔒 Security Comparison</h2>
+                <div class="security-grid">
+                    <div class="security-aspect">
+                        <h3>CSRF (Cross-Site Request Forgery)</h3>
+                        <div class="security-comparison-item">
+                            <div class="approach-security session-vuln">
+                                <strong>Session-Based:</strong>
+                                <span class="vuln-badge">⚠️ Vulnerable</span>
+                                <p>Cookies sent automatically by browser. Needs CSRF tokens for protection.</p>
+                            </div>
+                            <div class="approach-security token-safe">
+                                <strong>Token-Based:</strong>
+                                <span class="safe-badge">✅ Protected</span>
+                                <p>Tokens in headers not sent automatically. CSRF not possible.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-aspect">
+                        <h3>XSS (Cross-Site Scripting)</h3>
+                        <div class="security-comparison-item">
+                            <div class="approach-security session-safer">
+                                <strong>Session-Based:</strong>
+                                <span class="safer-badge">✅ Safer</span>
+                                <p>HttpOnly cookies can't be accessed by JavaScript.</p>
+                            </div>
+                            <div class="approach-security token-vuln">
+                                <strong>Token-Based:</strong>
+                                <span class="vuln-badge">⚠️ Vulnerable</span>
+                                <p>If stored in localStorage, XSS can steal tokens. Use httpOnly cookies!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-aspect">
+                        <h3>Revocation</h3>
+                        <div class="security-comparison-item">
+                            <div class="approach-security session-better">
+                                <strong>Session-Based:</strong>
+                                <span class="better-badge">✅ Easy</span>
+                                <p>Just delete session from storage. Instant revocation!</p>
+                            </div>
+                            <div class="approach-security token-harder">
+                                <strong>Token-Based:</strong>
+                                <span class="harder-badge">❌ Difficult</span>
+                                <p>Tokens valid until expiry. Need token blacklist or short expiration times.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Use Case Decision Helper -->
+            <section class="decision-helper glass-card">
+                <h2>🎯 Which Should You Use?</h2>
+                <div class="decision-grid">
+                    <div class="use-case-card session-recommended">
+                        <h3>Use Session-Based If:</h3>
+                        <ul>
+                            <li>✅ Traditional server-rendered web app</li>
+                            <li>✅ Monolithic architecture</li>
+                            <li>✅ Need immediate session revocation</li>
+                            <li>✅ Single domain</li>
+                            <li>✅ Storing complex session data</li>
+                            <li>✅ Examples: Admin panels, corporate intranets</li>
+                        </ul>
+                    </div>
+
+                    <div class="use-case-card token-recommended">
+                        <h3>Use Token-Based If:</h3>
+                        <ul>
+                            <li>✅ Single Page Application (SPA)</li>
+                            <li>✅ Mobile application</li>
+                            <li>✅ Microservices architecture</li>
+                            <li>✅ Cross-domain requests</li>
+                            <li>✅ Stateless REST API</li>
+                            <li>✅ Examples: Modern web apps, mobile apps, APIs</li>
+                        </ul>
+                    </div>
+
+                    <div class="use-case-card hybrid-recommended">
+                        <h3>Hybrid Approach:</h3>
+                        <p>🎯 <strong>Best of both worlds!</strong></p>
+                        <ul>
+                            <li>✅ Store JWT in <strong>httpOnly cookie</strong></li>
+                            <li>✅ Gets CSRF protection (add token)</li>
+                            <li>✅ Gets XSS protection (httpOnly)</li>
+                            <li>✅ Gets stateless scalability</li>
+                            <li>✅ Examples: Next.js auth, modern frameworks</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comparison Table -->
+            <section class="comparison-table-section glass-card">
+                <h2>📊 Quick Reference Table</h2>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Session-Based</th>
+                                <th>Token-Based</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>State</strong></td>
+                                <td>Stateful (server)</td>
+                                <td>Stateless (client)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Storage</strong></td>
+                                <td>Server memory/DB/Redis</td>
+                                <td>Client (cookie/localStorage)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Scalability</strong></td>
+                                <td>Harder (shared sessions)</td>
+                                <td>Easier (no shared state)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CSRF Protection</strong></td>
+                                <td>Needs CSRF tokens</td>
+                                <td>Naturally protected</td>
+                            </tr>
+                            <tr>
+                                <td><strong>XSS Protection</strong></td>
+                                <td>httpOnly cookies</td>
+                                <td>Vulnerable if in localStorage</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Revocation</strong></td>
+                                <td>Easy & immediate</td>
+                                <td>Difficult (need blacklist)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mobile Apps</strong></td>
+                                <td>Tricky</td>
+                                <td>Perfect</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cross-Domain</strong></td>
+                                <td>Difficult</td>
+                                <td>Easy</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Size</strong></td>
+                                <td>Unlimited (server)</td>
+                                <td>Limited (JWT size)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Performance</strong></td>
+                                <td>DB lookup overhead</td>
+                                <td>Signature verification</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Part of <a href="../index.html">Auth Academy</a> • Built with ❤️</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

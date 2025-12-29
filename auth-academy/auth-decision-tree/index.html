@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Decision Tree - Find Your Perfect Auth Method</title>
+    <meta name="description"
+        content="Interactive decision tree to find the perfect authentication method for your project. Get recommendations based on your specific needs.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">🌲</div>
+                <div>
+                    <h1>Auth Decision Tree</h1>
+                    <p class="subtitle">Find Your Perfect Authentication Method</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="../index.html" class="nav-link">← Auth Academy</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Introduction -->
+            <section class="intro-section glass-card">
+                <h2>🤔 Not Sure Which Auth to Use?</h2>
+                <p>Answer a few simple questions and we'll recommend the perfect authentication method for your project.
+                </p>
+                <div class="intro-stats">
+                    <div class="stat">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-text">
+                            <strong>Smart Recommendations</strong>
+                            <span>Based on your specific needs</span>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-text">
+                            <strong>20+ Auth Types</strong>
+                            <span>Comprehensive coverage</span>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">💡</div>
+                        <div class="stat-text">
+                            <strong>Code Examples</strong>
+                            <span>Ready to implement</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Decision Wizard -->
+            <section class="wizard-section glass-card" id="wizardSection">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">Question <span id="currentQuestion">1</span> of <span
+                        id="totalQuestions">5</span></div>
+
+                <div class="question-container" id="questionContainer">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+
+                <div class="wizard-controls">
+                    <button class="btn btn-secondary" id="backBtn" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                        </svg>
+                        Start Over
+                    </button>
+                </div>
+            </section>
+
+            <!-- Recommendation Result -->
+            <section class="result-section glass-card hidden" id="resultSection">
+                <div class="result-header">
+                    <div class="result-icon" id="resultIcon">🎯</div>
+                    <h2>Your Recommendation</h2>
+                </div>
+
+                <div class="recommended-auth" id="recommendedAuth">
+                    <!-- Recommendation will be inserted here -->
+                </div>
+
+                <div class="why-section" id="whySection">
+                    <h3>💡 Why This Choice?</h3>
+                    <div id="reasoning"></div>
+                </div>
+
+                <div class="alternatives-section" id="alternativesSection">
+                    <h3>🔄 Alternatives to Consider</h3>
+                    <div id="alternatives"></div>
+                </div>
+
+                <div class="implementation-section" id="implementationSection">
+                    <h3>📝 Quick Implementation Guide</h3>
+                    <div class="code-example">
+                        <div class="code-tabs">
+                            <button class="code-tab active" data-lang="nodejs">Node.js</button>
+                            <button class="code-tab" data-lang="python">Python</button>
+                            <button class="code-tab" data-lang="go">Go</button>
+                        </div>
+                        <pre><code id="codeExample"></code></pre>
+                    </div>
+                </div>
+
+                <div class="next-steps-section">
+                    <h3>🚀 Next Steps</h3>
+                    <div id="nextSteps"></div>
+                    <div class="action-buttons">
+                        <a href="#" id="explainerLink" class="btn btn-primary">
+                            Explore This Auth Method →
+                        </a>
+                        <button class="btn btn-secondary" id="tryAgainBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                            </svg>
+                            Try Different Scenario
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Reference -->
+            <section class="quick-ref-section glass-card">
+                <h2>🗺️ Authentication Methods Overview</h2>
+                <p>Don't want the wizard? Jump directly to what you need:</p>
+
+                <div class="auth-grid">
+                    <a href="../jwt-explainer/index.html" class="auth-quick-card">
+                        <div class="quick-icon">🎫</div>
+                        <h3>JWT</h3>
+                        <p>Stateless tokens for APIs & SPAs</p>
+                        <span class="use-case">→ Modern web apps</span>
+                    </a>
+
+                    <a href="../oauth-visualizer/index.html" class="auth-quick-card">
+                        <div class="quick-icon">🔐</div>
+                        <h3>OAuth 2.0</h3>
+                        <p>Delegated authorization</p>
+                        <span class="use-case">→ Third-party access</span>
+                    </a>
+
+                    <a href="../session-vs-token/index.html" class="auth-quick-card">
+                        <div class="quick-icon">🍪</div>
+                        <h3>Sessions</h3>
+                        <p>Server-side state management</p>
+                        <span class="use-case">→ Traditional web apps</span>
+                    </a>
+
+                    <a href="../api-key-security/index.html" class="auth-quick-card">
+                        <div class="quick-icon">🔑</div>
+                        <h3>API Keys</h3>
+                        <p>Simple service authentication</p>
+                        <span class="use-case">→ Public APIs</span>
+                    </a>
+
+                    <div class="auth-quick-card coming-soon">
+                        <div class="quick-icon">🛡️</div>
+                        <h3>MFA</h3>
+                        <p>Multi-factor authentication</p>
+                        <span class="use-case">→ High security</span>
+                    </div>
+
+                    <div class="auth-quick-card coming-soon">
+                        <div class="quick-icon">🔒</div>
+                        <h3>mTLS</h3>
+                        <p>Mutual certificate auth</p>
+                        <span class="use-case">→ Microservices</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Common Scenarios -->
+            <section class="scenarios-section glass-card">
+                <h2>💡 Common Scenarios</h2>
+                <div class="scenarios-grid">
+                    <div class="scenario-card">
+                        <h3>🌐 Building a Web Application?</h3>
+                        <div class="scenario-options">
+                            <div class="scenario-option">
+                                <strong>Traditional (Server-rendered)</strong>
+                                <p>→ Session-based authentication</p>
+                                <span class="tech">Express.js, Django, Rails</span>
+                            </div>
+                            <div class="scenario-option">
+                                <strong>SPA (React, Vue, Angular)</strong>
+                                <p>→ OAuth 2.0 + PKCE + JWT</p>
+                                <span class="tech">Auth0, Firebase, Supabase</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <h3>📱 Building a Mobile App?</h3>
+                        <div class="scenario-options">
+                            <div class="scenario-option">
+                                <strong>User Authentication</strong>
+                                <p>→ OAuth 2.0 + PKCE (mandatory!)</p>
+                                <span class="tech">Deep linking + system browser</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <h3>🔌 Building an API?</h3>
+                        <div class="scenario-options">
+                            <div class="scenario-option">
+                                <strong>Public API</strong>
+                                <p>→ API Keys with rate limiting</p>
+                                <span class="tech">Simple & widely understood</span>
+                            </div>
+                            <div class="scenario-option">
+                                <strong>User-specific API</strong>
+                                <p>→ JWT (from OAuth or direct)</p>
+                                <span class="tech">Stateless & scalable</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <h3>🤖 Service-to-Service?</h3>
+                        <div class="scenario-options">
+                            <div class="scenario-option">
+                                <strong>Microservices</strong>
+                                <p>→ JWT + mTLS (service mesh)</p>
+                                <span class="tech">Zero-trust architecture</span>
+                            </div>
+                            <div class="scenario-option">
+                                <strong>Backend Integration</strong>
+                                <p>→ OAuth Client Credentials</p>
+                                <span class="tech">No user context needed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Part of <a href="../index.html">Auth Academy</a> • Built with ❤️</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="decision-data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

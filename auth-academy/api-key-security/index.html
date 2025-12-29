@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Key Security - Generator & Analyzer</title>
+    <meta name="description"
+        content="Generate secure API keys, analyze vulnerabilities, and learn best practices for API key management.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">🔑</div>
+                <div>
+                    <h1>API Key Security</h1>
+                    <p class="subtitle">Generator & Vulnerability Analyzer</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="../index.html" class="nav-link">← Auth Academy</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Generator -->
+            <section class="generator-section glass-card">
+                <h2>🔐 Secure API Key Generator</h2>
+                <p>Generate cryptographically secure API keys with customizable options:</p>
+
+                <div class="generator-controls">
+                    <div class="control-group">
+                        <label>Key Length: <strong id="lengthValue">32</strong> characters</label>
+                        <input type="range" id="keyLength" min="16" max="128" value="32" step="8">
+                    </div>
+
+                    <div class="control-group">
+                        <label>Prefix (optional):</label>
+                        <select id="keyPrefix">
+                            <option value="">None</option>
+                            <option value="sk_live_">sk_live_ (Production)</option>
+                            <option value="sk_test_">sk_test_ (Testing)</option>
+                            <option value="pk_">pk_ (Public)</option>
+                            <option value="api_">api_</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Character Set:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="useLetters" checked> Letters (a-zA-Z)</label>
+                            <label><input type="checkbox" id="useNumbers" checked> Numbers (0-9)</label>
+                            <label><input type="checkbox" id="useSymbols"> Symbols (!@#$...)</label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-large" id="generateKey">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
+                            </path>
+                        </svg>
+                        Generate API Key
+                    </button>
+                </div>
+
+                <div class="generated-key hidden" id="generatedKeySection">
+                    <div class="key-display">
+                        <code id="generatedKey"></code>
+                        <button class="copy-btn" id="copyKey">Copy</button>
+                    </div>
+
+                    <div class="key-stats">
+                        <div class="stat"><span>Length:</span> <strong id="keyLengthStat"></strong></div>
+                        <div class="stat"><span>Entropy:</span> <strong id="entropyStat"></strong> bits</div>
+                        <div class="stat"><span>Security:</span> <strong id="securityScore"></strong></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vulnerability Scanner -->
+            <section class="scanner-section glass-card">
+                <h2>🔍 Vulnerability Scanner</h2>
+                <p>Paste code to detect exposed API keys:</p>
+
+                <textarea id="codeInput" placeholder="Paste your code here...
+Example issues we'll find:
+- const API_KEY = 'sk_live_abc123'
+- fetch('https://api.com?key=secret123')
+- // API_KEY: abc123xyz"></textarea>
+
+                <button class="btn btn-primary" id="scanCode">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    Scan for Vulnerabilities
+                </button>
+
+                <div class="scan-results hidden" id="scanResults">
+                    <div class="results-header">
+                        <h3>Scan Results</h3>
+                        <span class="issues-count" id="issuesCount"></span>
+                    </div>
+                    <div id="issuesList"></div>
+                </div>
+            </section>
+
+            <!-- Best Practices -->
+            <section class="best-practices-section glass-card">
+                <h2>✅ API Key Security Best Practices</h2>
+                <div class="practices-grid">
+                    <div class="practice-card do">
+                        <div class="practice-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <span>DO</span>
+                        </div>
+                        <ul>
+                            <li>Use environment variables (.env files)</li>
+                            <li>Rotate keys regularly (90 days max)</li>
+                            <li>Use different keys per environment</li>
+                            <li>Implement rate limiting</li>
+                            <li>Monitor key usage for anomalies</li>
+                            <li>Use HTTPS only (never HTTP)</li>
+                            <li>Add IP whitelisting when possible</li>
+                            <li>Set key expiration dates</li>
+                        </ul>
+                    </div>
+                    <div class="practice-card dont">
+                        <div class="practice-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            <span>DON'T</span>
+                        </div>
+                        <ul>
+                            <li>Never commit keys to Git/version control</li>
+                            <li>Don't hardcode in source code</li>
+                            <li>Don't expose in URLs or logs</li>
+                            <li>Don't use weak keys (short, predictable)</li>
+                            <li>Don't share keys via email/chat</li>
+                            <li>Don't reuse keys across projects</li>
+                            <li>Don't store in browser localStorage</li>
+                            <li>Don't use same key for dev & prod</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rotation Guide -->
+            <section class="rotation-section glass-card">
+                <h2>🔄 Key Rotation Strategy</h2>
+                <div class="rotation-timeline">
+                    <div class="timeline-step">
+                        <div class="step-icon">1</div>
+                        <div class="step-content">
+                            <h3>Generate New Key</h3>
+                            <p>Create new API key before old one expires</p>
+                        </div>
+                    </div>
+                    <div class="timeline-arrow">→</div>
+                    <div class="timeline-step">
+                        <div class="step-icon">2</div>
+                        <div class="step-content">
+                            <h3>Parallel Mode</h3>
+                            <p>Both old and new keys work (grace period)</p>
+                        </div>
+                    </div>
+                    <div class="timeline-arrow">→</div>
+                    <div class="timeline-step">
+                        <div class="step-icon">3</div>
+                        <div class="step-content">
+                            <h3>Update Clients</h3>
+                            <p>Migrate all applications to new key</p>
+                        </div>
+                    </div>
+                    <div class="timeline-arrow">→</div>
+                    <div class="timeline-step">
+                        <div class="step-icon">4</div>
+                        <div class="step-content">
+                            <h3>Revoke Old Key</h3>
+                            <p>Disable old key after grace period</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Common Vulnerabilities -->
+            <section class="vulnerabilities-section glass-card">
+                <h2>⚠️ Common API Key Vulnerabilities</h2>
+                <div class="vuln-grid">
+                    <div class="vuln-card">
+                        <div class="vuln-icon">🐛</div>
+                        <h3>Git Repository Exposure</h3>
+                        <p><strong>Issue:</strong> Keys committed to version control</p>
+                        <p><strong>Impact:</strong> Keys visible in git history forever</p>
+                        <p><strong>Fix:</strong> Use .gitignore, git-secrets, never commit</p>
+                    </div>
+                    <div class="vuln-card">
+                        <div class="vuln-icon">🌐</div>
+                        <h3>URL Parameter Exposure</h3>
+                        <p><strong>Issue:</strong> api.com?key=secret123</p>
+                        <p><strong>Impact:</strong> Keys in logs, browser history, referrer headers</p>
+                        <p><strong>Fix:</strong> Use Authorization header instead</p>
+                    </div>
+                    <div class="vuln-card">
+                        <div class="vuln-icon">📱</div>
+                        <h3>Client-Side Exposure</h3>
+                        <p><strong>Issue:</strong> Keys in JavaScript/mobile apps</p>
+                        <p><strong>Impact:</strong> Anyone can extract the key</p>
+                        <p><strong>Fix:</strong> Use backend proxy or OAuth</p>
+                    </div>
+                    <div class="vuln-card">
+                        <div class="vuln-icon">📝</div>
+                        <h3>Logging Keys</h3>
+                        <p><strong>Issue:</strong> Keys written to log files</p>
+                        <p><strong>Impact:</strong> Exposed in centralized logging</p>
+                        <p><strong>Fix:</strong> Mask/redact keys in logs</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Part of <a href="../index.html">Auth Academy</a> • Built with ❤️</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
